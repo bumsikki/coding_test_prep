@@ -1,4 +1,11 @@
 def check_SE(board, x, y):
+    # helper function for functinon "check"
+    # check if neighbor blocks of board[y,x]
+    # that are placed in South East side of board[y,x]
+    # are part of "Friends 4 Block"
+    
+    # return True if they are part of "Friends 4 Block"
+    # else return False
     target = board[y][x] 
     if board[y][x+1] != target:
         return False
@@ -9,6 +16,13 @@ def check_SE(board, x, y):
     return True
 
 def check_SW(board, x, y):
+    # helper function for functinon "check"
+    # check if neighbor blocks of board[y,x]
+    # that are placed in South West side of board[y,x]
+    # are part of "Friends 4 Block"
+    
+    # return True if they are part of "Friends 4 Block"
+    # else return False
     target = board[y][x]
     if board[y][x-1] != target:
         return False
@@ -19,6 +33,13 @@ def check_SW(board, x, y):
     return True
 
 def check_NW(board, x, y):
+    # helper function for functinon "check"
+    # check if neighbor blocks of board[y,x]
+    # that are placed in North West side of board[y,x]
+    # are part of "Friends 4 Block"
+    
+    # return True if they are part of "Friends 4 Block"
+    # else return False
     target = board[y][x]
     if board[y-1][x] != target:
         return False
@@ -29,6 +50,13 @@ def check_NW(board, x, y):
     return True
 
 def check_NE(board, x, y):
+    # helper function for functinon "check"
+    # check if neighbor blocks of board[y,x]
+    # that are placed in North East side of board[y,x]
+    # are part of "Friends 4 Block"
+    
+    # return True if they are part of "Friends 4 Block"
+    # else return False
     target = board[y][x]
     if board[y-1][x] != target:
         return False
@@ -39,7 +67,9 @@ def check_NE(board, x, y):
     return True
 
 def check(board, x, y):
-    # SE, SW, NE, NW
+    # helper functino for function "find_four"
+    # check if block, board[y,x], counts as "Friend 4 Block"
+    # return list of "Friend 4 Block"s that board[y,x] are part of
     result = ["SE","SW","NE", "NW"]
     if y == 0:
         # only check S
@@ -113,19 +143,24 @@ def check(board, x, y):
     return result
             
 def find_four(board, m, n):
+    # function that returns the list of blocks, board[y][x], that are 
+    # count as "Friend 4 Block"
+    
     results = []
     for y in range(m):
         for x in range(n):
             temp = []
+            # avoid to check empty block board[y][x] == "^"
             if board[y][x] != "^":
                 check_result = check(board, x, y)
                 if len(check_result) > 0:
-                    # print(y, x, check_result)
                     results.append([y,x])
-    # print(results)
     return results
 
 def organize_board(board, targets):
+    # organize the board in a way that there exist no space between blocks
+    # in terms of vertical axis(column-wise) 
+    # return organized board
     new_board = []
     # 1. get board in column wise
     cw_board = []
@@ -140,7 +175,7 @@ def organize_board(board, targets):
             for i in range(cnt):
                 temp.append("^")
         cw_board.append(list(reversed(temp)))
-    # print(cw_board)
+        
     # 2. re-organize cw_style board to original style
     for y in range(len(board)):
         row = []
@@ -152,18 +187,20 @@ def organize_board(board, targets):
 
 def solution(m, n, board):
     answer = 0
-    # m : 높이
-    # n : 너비
-    new_board =[]
     
     while True:
-        # print(board)
+        # find blocks that are counted as part of "Friends 4 Block"
+        # targets: list of vectors that contains [y,x]
         targets = find_four(board, m, n)
         if len(targets) > 0:
             answer += len(targets)
+            # organize the board in a way that there exist no space between blocks
+            # in terms of vertical axis(column-wise)
             board = organize_board(board, targets) 
             
         else:
+            # if there exists no block that are "Friends 4 Block",
+            # terminate the while loop
             break
     
     return answer
